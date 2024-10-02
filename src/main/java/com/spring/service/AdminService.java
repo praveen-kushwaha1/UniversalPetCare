@@ -1,4 +1,6 @@
 package com.spring.service;
 
-public class AdminService {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public class AdminService  {
 }

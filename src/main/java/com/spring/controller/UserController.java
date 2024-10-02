@@ -1,7 +1,8 @@
 package com.spring.controller;
 
 import com.spring.model.User;
-import com.spring.service.UserService;
+import com.spring.request.RegistrationRequest;
+import com.spring.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +16,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public void add(@RequestBody User user) {
-        userService.add(user);
+    public void add(@RequestBody RegistrationRequest request) {
+        userService.add(request);
     }
 }
 

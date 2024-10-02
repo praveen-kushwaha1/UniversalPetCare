@@ -1,4 +1,9 @@
 package com.spring.repository;
 
-public interface AdminRepository {
+import com.spring.model.Admin;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AdminRepository extends JpaRepository<Admin, Long> {
 }
