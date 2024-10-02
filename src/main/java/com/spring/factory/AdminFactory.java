@@ -13,7 +13,6 @@ public class AdminFactory {
     private final AdminRepository adminRepository;
     private final UserAttributesMapper userAttributesMapper;
 
-
     public Admin createAdmin(RegistrationRequest request) {
         Admin admin = new Admin();
         userAttributesMapper.setCommonAttributes(request, admin);

@@ -5,7 +5,6 @@ import com.spring.model.User;
 import com.spring.repository.UserRepository;
 import com.spring.request.RegistrationRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,7 +31,5 @@ public class SimpleUSerFactory implements UserFactory {
                 return null;
             }
         }
-
-
     }
 }
