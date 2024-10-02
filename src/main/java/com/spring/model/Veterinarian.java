@@ -12,8 +12,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "adm_id")
-public class Admin extends User{
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@PrimaryKeyJoinColumn(name = "vet_id")
+public class Veterinarian extends User {
+ //  @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
+    private String specialization;
 }
