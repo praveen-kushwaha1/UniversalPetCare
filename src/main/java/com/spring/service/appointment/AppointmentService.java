@@ -4,13 +4,18 @@ package com.spring.service.appointment;
 import com.spring.enums.AppointmentStatus;
 import com.spring.exception.ResourceNotFoundException;
 import com.spring.model.Appointment;
+import com.spring.model.Pet;
 import com.spring.model.User;
 import com.spring.repository.AppointmentRepository;
 import com.spring.repository.UserRepository;
 import com.spring.request.AppointmentUpdateRequest;
+import com.spring.request.BookAppointmentRequest;
+import com.spring.service.pet.IPetService;
 import com.spring.utils.FeedBackMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,12 +27,22 @@ import java.util.Optional;
 public class AppointmentService implements IAppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
+    private final IPetService petService;
 
+
+    @Transactional
     @Override
-    public Appointment createAppointment(Appointment appointment, Long senderId, Long recipientId) {
+    public Appointment createAppointment(BookAppointmentRequest request, Long senderId, Long recipientId) {
         Optional<User> sender = userRepository.findById(senderId);
         Optional<User> recipient = userRepository.findById(recipientId);
         if (sender.isPresent() && recipient.isPresent()) {
+
+            Appointment appointment = request.getAppointment();
+            List<Pet> pets = request.getPets();
+            pets.forEach(pet -> pet.setAppointment(appointment));
+            List<Pet> savedPets = petService.savePetsForAppointment(pets);
+            appointment.setPets(savedPets);
+
             appointment.addPatient(sender.get());
             appointment.addVeterinarian(recipient.get());
             appointment.setAppointmentNo();
@@ -48,7 +63,7 @@ public class AppointmentService implements IAppointmentService {
         if(!Objects.equals(existingAppointment.getStatus(), AppointmentStatus.WAITING_FOR_APPROVAL)) {
             throw new IllegalStateException(FeedBackMessage.ALREADY_APPROVED) ;
         }
-         existingAppointment.setAppointmentDate(LocalDate.parse(request.getAppointmentDate()));
+        existingAppointment.setAppointmentDate(LocalDate.parse(request.getAppointmentDate()));
         existingAppointment.setAppointmentTime(LocalTime.parse(request.getAppointmentTime()));
         existingAppointment.setReason(request.getReason());
         return appointmentRepository.save(existingAppointment);
