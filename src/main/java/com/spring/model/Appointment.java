@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -47,6 +48,10 @@ public class Appointment {
     @JoinColumn(name = "recipient")
     @ManyToOne(fetch = FetchType.LAZY)
     private User veterinarian;
+
+    @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL)//Appointment is delelet then pet is also delted
+    List<Pet> pets = new ArrayList<>();
+
 
     public void addPatient(User sender) {
         this.setPatient(sender);
